@@ -1,6 +1,23 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.5.RELEASE'
+	}
+	repositories {
+		jcenter()
+		mavenCentral()
+		mavenLocal()
+	}
+
+	dependencies {
+		// 스프링 부트 플러그인 의존성
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.1.5.RELEASE'
 	id 'java'
+	id 'eclipse'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -10,13 +27,27 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+	jcenter()
+
+    mavenCentral()
+
+    mavenLocal()
 }
 
 dependencies {
+	compileOnly 'org.projectlombok:lombok:1.18.8'
+	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'com.h2database:h2'
+	compile 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile 'org.springframework.boot:spring-boot-starter-actuator'
+}
+
+eclipse {
+	classpath {
+		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+		containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.lancher.StandardVMType/JavaSE-1.8'
+	}
 }
